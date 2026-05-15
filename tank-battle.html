@@ -156,9 +156,9 @@ class Tank {
     this.color = color;
     this.color2 = color2;
     this.isPlayer = isPlayer;
-    this.speed = isPlayer ? 0.12 : 0.04;
+    this.speed = isPlayer ? 0.12 : 0.025;
     this.shootCooldown = 0;
-    this.shootDelay = isPlayer ? 15 : 60;
+    this.shootDelay = isPlayer ? 15 : 90;
     this.alive = true;
     this.size = CELL * 0.85;
     this.half = this.size / 2;
@@ -168,7 +168,7 @@ class Tank {
     this.moving = false;
     // AI state
     this.aiDirTimer = 0;
-    this.aiShootTimer = 30 + Math.floor(Math.random() * 80);
+    this.aiShootTimer = 80 + Math.floor(Math.random() * 120);
   }
 
   gridX() { return Math.round((this.px - CELL/2) / CELL); }
@@ -224,7 +224,7 @@ class Tank {
       // Enemy AI
       this.aiDirTimer--;
       if (this.aiDirTimer <= 0) {
-        this.aiDirTimer = 40 + Math.floor(Math.random() * 60);
+        this.aiDirTimer = 80 + Math.floor(Math.random() * 80);
         // Bias toward player direction sometimes
         if (Math.random() < 0.4) {
           const dx = player.px - this.px;
@@ -250,7 +250,7 @@ class Tank {
       this.aiShootTimer--;
       if (this.aiShootTimer <= 0) {
         this.shoot();
-        this.aiShootTimer = 40 + Math.floor(Math.random() * 80);
+        this.aiShootTimer = 80 + Math.floor(Math.random() * 100);
       }
     }
   }
@@ -292,7 +292,7 @@ class Bullet {
     this.y = y;
     this.dir = dir;
     this.isPlayer = isPlayer;
-    this.speed = 0.3;
+    this.speed = 0.2;
     this.alive = true;
     this.r = 2.5;
   }
@@ -414,7 +414,7 @@ function initStage() {
   enemies = [];
   bullets = [];
   particles = [];
-  enemiesLeft = 4 + stage * 2;
+  enemiesLeft = 3 + stage;
   spawnTimer = 0;
   enemyShootTimer = 0;
   gameOverFlag = false;
@@ -488,7 +488,7 @@ function update() {
 
   // Spawn enemies periodically
   spawnTimer++;
-  if (spawnTimer >= 100 && enemiesLeft > 0 && enemies.length < 4) {
+  if (spawnTimer >= 180 && enemiesLeft > 0 && enemies.length < 4) {
     spawnTimer = 0;
     spawnEnemy();
   }
